@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard for Health Psychology Appointments">
+    <title>Admin Dashboard | Health Psychology</title>
+    <link rel="icon" href="image-2.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-section {
+            padding: 120px 0 60px;
+            min-height: 80vh;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dashboard-container {
+            display: none;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header header-inner">
+        <nav class="navbar container">
+            <a href="index.html#home" class="logo">
+                <img src="image-2.png" alt="Health Psychology Logo">
+                <span>HealthMind Admin</span>
+            </a>
+            <div class="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#about" class="nav-link">About</a></li>
+                    <li><a href="index.html#services" class="nav-link">Services</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="nav-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <i class="fas fa-moon theme-toggle" id="theme-button"></i>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="admin-section">
+            <div class="container">
+                <div id="admin-login-view" class="login-container">
+                    <h2 class="section-title" style="text-align: center; margin-bottom: 1.5rem;">Admin Login</h2>
+                    <form id="admin-login-form" class="booking-form"
+                        style="box-shadow: none; border: none; padding: 0;">
+                        <div class="form-group">
+                            <label for="admin-email">Email</label>
+                            <input type="email" id="admin-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <input type="password" id="admin-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                    </form>
+                </div>
+                <div id="admin-dashboard-view" class="dashboard-container">
+                    <div class="dashboard-header">
+                        <h2>Appointment Management</h2>
+                        <button id="admin-logout" class="btn btn-outline" onclick="logoutAdmin()">Logout</button>
+                    </div>
+                    <div id="appointments-list" class="appointments-list">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer section">
+        <div class="container footer-grid">
+            <div class="footer-box brand-box">
+                <a href="index.html" class="logo footer-logo">
+                    <img src="image-2.png" alt="Logo">
+                    <span>HealthMind Admin</span>
+                </a>
+                <p>Secure portal for clinical management.</p>
+            </div>
+            <div class="footer-box">
+                <h3>System</h3>
+                <ul>
+                    <li><a href="javascript:void(0)">Backup</a></li>
+                    <li><a href="javascript:void(0)">Logs</a></li>
+                </ul>
+            </div>
+            <div class="footer-box">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="index.html">Main Site</a></li>
+                    <li><a href="booking.html">Bookings</a></li>
+                </ul>
+            </div>
+            <div class="footer-box">
+                <h3>Contact</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> 0781764187</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2025 Health Psychology. All Rights Reserved.</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/osmanibrahim5181" target="_blank" aria-label="Facebook"><i
+                        class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/osman597157" target="_blank" aria-label="Twitter"><i
+                        class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/osmanibrahim5181" target="_blank" aria-label="Instagram"><i
+                        class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@yourchannelname" target="_blank" aria-label="YouTube"><i
+                        class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+    <script src="index.js"></script>
+    <script>
+        function logoutAdmin() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('isAdminLoggedIn');
+                window.location.href = 'index.html';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('admin-logout');
+            if (btn) {
+                btn.onclick = logoutAdmin;
+            }
+        });
+    </script>
+</body>
+
+</html>
