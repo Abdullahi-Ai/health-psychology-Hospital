@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         return hashHex;
     }
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw58A6O3HmVCH9yG-5j0ZuImn24ZhBPlsc616qLonBvYcdlEdFlc-QuSLGnhkZjajxG/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2RMIpHfkN_znl0XEF-iJwKgQMSK_t94d0sam5Vj35GUa7G1SCQi0Ap_FLgCoxKmAy/exec';
     let appointments = JSON.parse(localStorage.getItem('myAppointments')) || [];
     const phoneInput = document.getElementById('phone');
     let iti;
