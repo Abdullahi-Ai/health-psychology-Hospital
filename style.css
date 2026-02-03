@@ -125,7 +125,7 @@ img {
     }
 }
 
-/* Large Desktop Optimization (1920px - 2560px) */
+
 @media (min-width: 1920px) {
     body {
         font-size: 1.1rem;

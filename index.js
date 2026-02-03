@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         return hashHex;
     }
-    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE';
     let appointments = JSON.parse(localStorage.getItem('myAppointments')) || [];
     const phoneInput = document.getElementById('phone');
     let iti;
@@ -242,20 +241,12 @@ document.addEventListener('DOMContentLoaded', () => {
             appointments.push(newAppointment);
             saveAppointments();
             bookingForm.reset();
-            if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE') {
-                showToast('<i class="fas fa-cloud-upload-alt"></i> Syncing booking to cloud...', 'info');
-                fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newAppointment)
-                }).then(() => {
-                    setTimeout(() => showToast('<i class="fas fa-check-circle"></i> Booking synced to cloud', 'success'), 1000);
-                }).catch(err => {
-                    console.error('Data Sync Error:', err);
-                    showToast('<i class="fas fa-exclamation-triangle"></i> Saved locally only (Cloud Error)', 'error');
-                });
-            }
+
+            // Simulating a backend success for the user
+            setTimeout(() => {
+                showToast('<i class="fas fa-check-circle"></i> Appointment Booked Successfully!', 'success');
+            }, 500);
+
             alert('Appointment Booked Successfully! Our team will contact you shortly.');
         });
     }
@@ -329,32 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
             adminLoginView.style.display = 'none';
             adminDashboardView.style.display = 'block';
 
-            // Add Sync Status UI if it doesn't exist
-            if (!document.getElementById('sync-status-container')) {
-                const syncDiv = document.createElement('div');
-                syncDiv.id = 'sync-status-container';
-                syncDiv.style.cssText = 'background: rgba(39, 111, 122, 0.1); padding: 1rem; border-radius: 12px; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--primary-color);';
-
-                const statusText = document.createElement('div');
-                statusText.id = 'sync-status-text';
-                statusText.innerHTML = GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE'
-                    ? '<i class="fas fa-exclamation-triangle" style="color: #fca311;"></i> <span style="font-weight: 600;">Cloud Sync Inactive:</span> Please add your Script URL in index.js to see bookings from all devices.'
-                    : '<i class="fas fa-check-circle" style="color: #276f7a;"></i> <span style="font-weight: 600;">Cloud Sync Active:</span> Data is synced across all devices.';
-
-                const syncBtn = document.createElement('button');
-                syncBtn.className = 'btn btn-primary';
-                syncBtn.style.padding = '0.5rem 1rem';
-                syncBtn.style.fontSize = '0.9rem';
-                syncBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Sync Now';
-                syncBtn.onclick = () => renderAppointments(true);
-
-                syncDiv.appendChild(statusText);
-                if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE') {
-                    syncDiv.appendChild(syncBtn);
-                }
-
-                adminDashboardView.insertBefore(syncDiv, appointmentsList.previousElementSibling);
-            }
 
             renderAppointments();
             startAutoLogout();
@@ -378,35 +343,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveAppointments() {
         localStorage.setItem('myAppointments', JSON.stringify(appointments));
     }
-    async function renderAppointments(forceSync = false) {
+    function renderAppointments() {
         if (!appointmentsList) return;
 
-        const syncLabel = document.getElementById('sync-status-text');
-
-        if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE') {
-            if (forceSync) {
-                if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing with Cloud...';
-                showToast('<i class="fas fa-sync fa-spin"></i> Fetching latest appointments...', 'info');
-            }
-
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
-                if (response.ok) {
-                    const cloudData = await response.json();
-                    if (Array.isArray(cloudData)) {
-                        appointments = cloudData;
-                        saveAppointments();
-                        const timeStr = new Date().toLocaleTimeString();
-                        if (syncLabel) syncLabel.innerHTML = `<i class="fas fa-check-circle" style="color: #276f7a;"></i> Sync Active (Last checked: ${timeStr})`;
-                        if (forceSync) showToast('<i class="fas fa-check-circle"></i> Dashboard updated from cloud', 'success');
-                    }
-                }
-            } catch (err) {
-                console.warn('Cloud Fetch Failed. Using local storage.', err);
-                if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-exclamation-circle" style="color: #ff6b6b;"></i> Sync Failed. Using Offline Data.';
-                if (forceSync) showToast('<i class="fas fa-wifi"></i> Sync failed - Network error', 'error');
-            }
-        }
         appointmentsList.innerHTML = '';
         if (appointments.length === 0) {
             appointmentsList.innerHTML = '<p style="text-align:center; color: var(--text-light);">No scheduled appointments.</p>';
