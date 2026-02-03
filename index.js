@@ -14,6 +14,48 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
         console.log('Refresh redirect not supported');
     }
+
+    // Helper: Toast Notifications
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = message;
+
+        // Basic Toast Styles (injected if not present in CSS)
+        Object.assign(toast.style, {
+            position: 'fixed',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: type === 'success' ? '#276f7a' : (type === 'error' ? '#ff6b6b' : '#333'),
+            color: '#fff',
+            padding: '12px 24px',
+            borderRadius: '50px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            zIndex: '10000',
+            opacity: '0',
+            transition: 'opacity 0.3s ease, transform 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '0.95rem'
+        });
+
+        document.body.appendChild(toast);
+
+        // Animate In
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(-10px)';
+        });
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
     const navToggle = document.querySelector('.nav-toggle');
     const navClose = document.querySelector('.nav-close');
     const navMenu = document.querySelector('.nav-menu');
@@ -201,12 +243,18 @@ document.addEventListener('DOMContentLoaded', () => {
             saveAppointments();
             bookingForm.reset();
             if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE') {
+                showToast('<i class="fas fa-cloud-upload-alt"></i> Syncing booking to cloud...', 'info');
                 fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(newAppointment)
-                }).catch(err => console.error('Data Sync Error:', err));
+                }).then(() => {
+                    setTimeout(() => showToast('<i class="fas fa-check-circle"></i> Booking synced to cloud', 'success'), 1000);
+                }).catch(err => {
+                    console.error('Data Sync Error:', err);
+                    showToast('<i class="fas fa-exclamation-triangle"></i> Saved locally only (Cloud Error)', 'error');
+                });
             }
             alert('Appointment Booked Successfully! Our team will contact you shortly.');
         });
@@ -336,7 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const syncLabel = document.getElementById('sync-status-text');
 
         if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE') {
-            if (forceSync && syncLabel) syncLabel.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing with Cloud...';
+            if (forceSync) {
+                if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing with Cloud...';
+                showToast('<i class="fas fa-sync fa-spin"></i> Fetching latest appointments...', 'info');
+            }
 
             try {
                 const response = await fetch(GOOGLE_SCRIPT_URL);
@@ -345,12 +396,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (Array.isArray(cloudData)) {
                         appointments = cloudData;
                         saveAppointments();
-                        if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-check-circle" style="color: #276f7a;"></i> Cloud Sync Successful';
+                        const timeStr = new Date().toLocaleTimeString();
+                        if (syncLabel) syncLabel.innerHTML = `<i class="fas fa-check-circle" style="color: #276f7a;"></i> Sync Active (Last checked: ${timeStr})`;
+                        if (forceSync) showToast('<i class="fas fa-check-circle"></i> Dashboard updated from cloud', 'success');
                     }
                 }
             } catch (err) {
                 console.warn('Cloud Fetch Failed. Using local storage.', err);
                 if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-exclamation-circle" style="color: #ff6b6b;"></i> Sync Failed. Using Offline Data.';
+                if (forceSync) showToast('<i class="fas fa-wifi"></i> Sync failed - Network error', 'error');
             }
         }
         appointmentsList.innerHTML = '';
