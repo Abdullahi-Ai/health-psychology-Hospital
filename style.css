@@ -732,23 +732,25 @@ body.dark-theme .icon-box {
 
     .nav-menu-header {
         padding: 1.5rem;
-        border-bottom: 2px solid var(--primary-color);
-        background-color: var(--light-bg);
+        background-color: var(--white);
         display: flex;
         align-items: center;
-        gap: 0.8rem;
+        gap: 1rem;
+        position: relative;
+        border-bottom: 1px solid #f0f0f0;
     }
 
     .nav-menu-header img {
-        height: 35px;
+        height: 40px;
         width: auto;
     }
 
     .nav-menu-header .hospital-name {
         font-family: var(--font-heading);
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: var(--primary-color);
+        line-height: 1.2;
     }
 
     body.dark-theme .nav-menu {
@@ -769,26 +771,34 @@ body.dark-theme .icon-box {
 
     .nav-link {
         color: var(--text-color);
-        font-size: 1.05rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        padding: 1rem 1.5rem;
+        padding: 1.2rem 1.5rem;
         border-bottom: 1px solid #f0f0f0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        transition: 0.3s ease;
     }
 
     .nav-link::after {
-        content: '\f105';
+        content: '\f054';
         font-family: 'Font Awesome 6 Free';
         font-weight: 900;
-        opacity: 0.5;
+        font-size: 0.9rem;
+        opacity: 0.3;
+        transition: 0.3s ease;
     }
 
     .nav-link.active {
-        background-color: rgba(39, 111, 122, 0.05);
-        color: var(--primary-color);
-        border-right: 4px solid var(--primary-color);
+        background-color: var(--primary-color);
+        color: var(--white);
+        border-bottom-color: var(--primary-color);
+    }
+
+    .nav-link.active::after {
+        color: var(--white);
+        opacity: 0.8;
     }
 
     .navbar {
@@ -826,11 +836,27 @@ body.dark-theme .icon-box {
     }
 
     .nav-close {
-        display: block;
+        display: flex;
         position: absolute;
-        top: 1.5rem;
+        top: 1rem;
         right: 1.5rem;
+        width: 35px;
+        height: 35px;
+        background-color: var(--white);
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
         color: var(--text-color);
+        font-size: 1.2rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 210;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-close:hover {
+        transform: rotate(90deg);
+        color: var(--primary-color);
     }
 
     .hero-title {
@@ -1792,23 +1818,41 @@ body.dark-theme .btn-outline:hover {
 }
 
 .whatsapp-label {
-    background: white;
-    padding: 8px 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    font-size: 0.9rem;
+    background: #f4f4f4;
+    padding: 10px 18px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-size: 0.95rem;
     font-weight: 600;
-    color: var(--text-color);
+    color: #444;
     white-space: nowrap;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: all 0.3s ease;
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
+    display: none;
+    /* Hidden by default on mobile, shown on desktop or manual trigger if needed */
 }
 
-.whatsapp-container:hover .whatsapp-label {
-    opacity: 1;
-    transform: translateX(0);
+@media (min-width: 768px) {
+    .whatsapp-label {
+        display: block;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: all 0.3s ease;
+    }
+
+    .whatsapp-container:hover .whatsapp-label {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Force label visibility in mobile if desired by user, or keep it clean */
+@media (max-width: 767px) {
+    .whatsapp-label {
+        display: block;
+        /* Show it always on mobile as per example */
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
 }
 
 .whatsapp-float {
@@ -1841,45 +1885,65 @@ body.dark-theme .btn-outline:hover {
 @media (max-width: 768px) {
     .nav-social {
         display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem 1rem;
+        margin-top: auto;
+        /* Push to bottom */
+        border-top: 1px solid #f0f0f0;
     }
-}
 
-.nav-social-link {
-    color: var(--text-color);
-    font-size: 1.25rem;
-    transition: color 0.3s ease;
-}
+    .nav-social-link {
+        width: 40px;
+        height: 40px;
+        background-color: #f8f9fa;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+    }
 
-.nav-social-link:hover {
-    color: var(--primary-color);
-}
+    .nav-social-link:hover {
+        background-color: var(--primary-color);
+        color: var(--white);
+        transform: translateY(-3px);
+        border-color: var(--primary-color);
+    }
 
-.nav-social-link.fa-whatsapp:hover {
-    color: #25d366;
-}
+    .nav-social-link:hover {
+        color: var(--primary-color);
+    }
 
-.nav-social-link.fa-facebook:hover {
-    color: #1877f2;
-}
+    .nav-social-link.fa-whatsapp:hover {
+        color: #25d366;
+    }
 
-.nav-social-link.fa-x-twitter:hover {
-    color: #000;
-}
+    .nav-social-link.fa-facebook:hover {
+        color: #1877f2;
+    }
 
-.nav-social-link.fa-instagram:hover {
-    color: #e4405f;
-}
+    .nav-social-link.fa-x-twitter:hover {
+        color: #000;
+    }
 
-body.dark-theme .nav-social-link {
-    color: var(--text-color);
-}
+    .nav-social-link.fa-instagram:hover {
+        color: #e4405f;
+    }
 
-body.dark-theme .nav-social-link.fa-x-twitter:hover {
-    color: #fff;
-}
+    body.dark-theme .nav-social-link {
+        color: var(--text-color);
+    }
 
-html,
-body {
-    overflow-x: hidden;
-    width: 100%;
-}
+    body.dark-theme .nav-social-link.fa-x-twitter:hover {
+        color: #fff;
+    }
+
+    html,
+    body {
+        overflow-x: hidden;
+        width: 100%;
+    }
