@@ -397,6 +397,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const syncLabel = document.getElementById('sync-status-text');
 
+        // Safety timeout to prevent hanging UI
+        const timeoutId = setTimeout(() => {
+            if (syncLabel && syncLabel.innerHTML.includes('Syncing')) {
+                syncLabel.innerHTML = '<i class="fas fa-exclamation-circle" style="color: #ff6b6b;"></i> Sync Timeout. Retrying...';
+            }
+        }, 10000);
+
         if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE') {
             if (forceSync) {
                 if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing with Cloud...';
@@ -405,6 +412,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const response = await fetch(GOOGLE_SCRIPT_URL);
+                clearTimeout(timeoutId); // Clear timeout on response
+
                 if (response.ok) {
                     const cloudData = await response.json();
                     if (Array.isArray(cloudData)) {
@@ -414,11 +423,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (syncLabel) syncLabel.innerHTML = `<i class="fas fa-check-circle" style="color: #276f7a;"></i> Sync Active (Last checked: ${timeStr})`;
                         if (forceSync) showToast('<i class="fas fa-check-circle"></i> Dashboard updated from cloud', 'success');
                     }
+                } else {
+                    throw new Error(`Server returned ${response.status}`);
                 }
             } catch (err) {
+                clearTimeout(timeoutId);
                 console.warn('Cloud Fetch Failed. Using local storage.', err);
-                if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-exclamation-circle" style="color: #ff6b6b;"></i> Sync Failed. Using Offline Data.';
-                if (forceSync) showToast('<i class="fas fa-wifi"></i> Sync failed - Network error', 'error');
+                // Only show error if we were trying to force sync, otherwise stay silent fallback
+                if (syncLabel) syncLabel.innerHTML = '<i class="fas fa-exclamation-circle" style="color: #ff6b6b;"></i> Retrying Sync... (Network Error)';
+                if (forceSync) showToast('<i class="fas fa-wifi"></i> Sync failed - Check Internet', 'error');
             }
         }
 
