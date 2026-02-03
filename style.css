@@ -92,7 +92,11 @@ img {
     }
 
     .logo img {
-        height: 45px;
+        height: 38px;
+    }
+
+    .nav-menu-header {
+        display: none;
     }
 
     .hero-title {
@@ -132,7 +136,7 @@ img {
     }
 
     .logo img {
-        height: 50px;
+        height: 42px;
     }
 
     .hero-title {
@@ -196,7 +200,7 @@ img {
     }
 
     .logo img {
-        height: 55px;
+        height: 45px;
     }
 
     .hero-title {
@@ -365,7 +369,7 @@ body.dark-theme .header.scrolled {
 }
 
 .logo img {
-    height: 40px;
+    height: 35px;
     transition: var(--transition);
 }
 
