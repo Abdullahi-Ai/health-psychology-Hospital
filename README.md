@@ -32,6 +32,27 @@ git push origin main
 ```
 
 
+## 🌍 **How to View Bookings on ALL Devices (Optional)**
+
+By default, bookings are saved to the device (Phone/Laptop) where they were made. To see **Phone bookings on your Laptop**, you must enable **Cloud Sync**:
+
+1.  **Create the Database**:
+    *   Go to [Google Sheets](https://sheets.google.com) and create a cheat called "Hospital Bookings".
+    *   Go to **Extensions > Apps Script**.
+    *   Paste the code from `apps-script.gs` (included in your files).
+
+2.  **Deploy**:
+    *   Click **Deploy > New Deployment**.
+    *   Select **Web App**.
+    *   Who has access: **Anyone** (Important!).
+    *   Click **Deploy** and copy the **Web App URL**.
+
+3.  **Connect**:
+    *   Paste the URL into `index.js` at line 138:
+    *   `const GOOGLE_SCRIPT_URL = 'https://script.google.com/...';`
+
+**Once connected, the Admin Dashboard will show bookings from every device!**
+
 ## 🩺 Our Philosophy
 
 HealthMind is about bringing human connection back into medicine. We use technology like Google Sheets to keep our records organized safely, but at the end of the day, this site is about the person sitting behind the screen looking for a bit of hope.
