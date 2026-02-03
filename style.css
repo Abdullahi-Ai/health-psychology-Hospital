@@ -577,9 +577,9 @@ body.dark-theme .icon-box {
 
 .footer {
     background-color: var(--dark-bg);
-    color: #b0b0b0;
-    padding: 1.5rem 0 0.8rem;
-    font-size: 0.85rem;
+    color: rgba(254, 254, 254, 0.75);
+    padding: 3rem 0 1.5rem;
+    font-size: 0.9rem;
 }
 
 .footer-grid {
@@ -640,15 +640,17 @@ body.dark-theme .icon-box {
 
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 0.8rem;
+    padding: 1.5rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    margin-top: 1rem;
 }
 
 .footer-bottom p {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .footer-bottom .social-links {
@@ -657,7 +659,7 @@ body.dark-theme .icon-box {
 }
 
 .footer-bottom .social-links a {
-    color: #b0b0b0;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 1rem;
     transition: var(--transition);
 }
@@ -1509,6 +1511,13 @@ body.dark-theme .sidebar-list li {
         transform: translateX(-50%);
     }
 
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        padding-bottom: 80px;
+        /* Clearance for WhatsApp button */
+    }
+
     .social-links {
         justify-content: center;
     }
@@ -1828,7 +1837,7 @@ body.dark-theme .btn-outline:hover {
     white-space: nowrap;
     border: 1px solid #ddd;
     display: none;
-    /* Hidden by default on mobile, shown on desktop or manual trigger if needed */
+
 }
 
 @media (min-width: 768px) {
@@ -1845,11 +1854,10 @@ body.dark-theme .btn-outline:hover {
     }
 }
 
-/* Force label visibility in mobile if desired by user, or keep it clean */
 @media (max-width: 767px) {
     .whatsapp-label {
         display: block;
-        /* Show it always on mobile as per example */
+
         font-size: 0.8rem;
         padding: 6px 12px;
     }
@@ -1914,24 +1922,20 @@ body.dark-theme .btn-outline:hover {
         border-color: var(--primary-color);
     }
 
-    .nav-social-link:hover {
-        color: var(--primary-color);
-    }
-
     .nav-social-link.fa-whatsapp:hover {
-        color: #25d366;
+        background-color: #25d366;
     }
 
     .nav-social-link.fa-facebook:hover {
-        color: #1877f2;
+        background-color: #1877f2;
     }
 
     .nav-social-link.fa-x-twitter:hover {
-        color: #000;
+        background-color: #000;
     }
 
     .nav-social-link.fa-instagram:hover {
-        color: #e4405f;
+        background-color: #e4405f;
     }
 
     body.dark-theme .nav-social-link {
@@ -1939,11 +1943,13 @@ body.dark-theme .btn-outline:hover {
     }
 
     body.dark-theme .nav-social-link.fa-x-twitter:hover {
-        color: #fff;
+        background-color: #fff;
+        color: #000;
     }
+}
 
-    html,
-    body {
-        overflow-x: hidden;
-        width: 100%;
-    }
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
