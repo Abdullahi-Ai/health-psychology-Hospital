@@ -207,6 +207,7 @@ body.dark-theme .header.scrolled {
 
 .logo img {
     height: 40px;
+    transition: var(--transition);
 }
 
 .header.scrolled .logo,
@@ -249,7 +250,7 @@ body.dark-theme .header-inner .theme-toggle {
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .nav-list {
@@ -743,8 +744,31 @@ body.dark-theme .icon-box {
         font-size: 1.2rem;
     }
 
+    .navbar {
+        height: 70px;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .logo img {
+        height: 30px;
+    }
+
     .nav-toggle {
         display: block;
+        margin-left: 1rem;
+    }
+
+    .theme-toggle {
+        margin-right: 0.5rem;
+    }
+
+    .nav-menu .nav-btn {
+        margin-top: 2rem;
+        width: 100%;
+        text-align: center;
     }
 
     .nav-close {
